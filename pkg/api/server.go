@@ -33,6 +33,6 @@ func StartServer(
 	routes.AdminRoutes(engine, admin, product, category, order, coupon,adminMiddleware)
 	routes.UserRoutes(engine, user, product, admin, wishlist, cart, order, payment, coupon,userMiddleware)
 
-	engine.Run(":8080")
+	engine.Run(":3000")
 	
 }
