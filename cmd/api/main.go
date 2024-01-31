@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	err := godotenv.Load("/home/jasim/CityViBe-Project-Ecommerce/.env")
 	// err := godotenv.Load("/home/jasim/CityViBe-Project-Ecommerce/.env")
+	err := godotenv.Load("/etc/secrets/.env")
 	if err != nil {
 		log.Fatal("Error loading .env file", err)
 	}
