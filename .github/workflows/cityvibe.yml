@@ -1,0 +1,40 @@
+name: cityvibe
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21.x'
+
+    - name: Build
+      run: go build -v ./...
+
+    - name: Test
+      run: go test -v ./...
+
+
+# # Terminated EC2 instance 
+
+#     - name: Deploy to AWS EC2 instance
+#       uses: appleboy/ssh-action@master
+#       with:
+#         host: ${{secrets.PUBLIC_IP}}
+#         username: ubuntu
+#         key: ${{secrets.SSH_KEY}}
+#         script: |
+#           cd CleanArch-lapify/
+#           git pull
+#           go build ./
+#           sudo systemctl restart lapify.service
