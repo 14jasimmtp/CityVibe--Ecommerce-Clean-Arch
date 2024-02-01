@@ -26,13 +26,13 @@ func StartServer(
 
 	engine.Use(gin.Logger())
 
-	engine.LoadHTMLFiles("/home/jasim/CityVibe-Ecommerce-CleanCode-Project/template/*")
 
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	engine.LoadHTMLFiles("/home/jasim/CityVibe-Ecommerce-CleanCode-Project/template/*")
 
 	routes.AdminRoutes(engine, admin, product, category, order, coupon,adminMiddleware)
 	routes.UserRoutes(engine, user, product, admin, wishlist, cart, order, payment, coupon,userMiddleware)
 
 	engine.Run(":3000")
-	
+
 }

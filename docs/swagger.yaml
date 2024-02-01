@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   models.AddProduct:
     properties:
@@ -232,7 +233,10 @@ definitions:
     - phone
     type: object
 info:
-  contact: {}
+  contact:
+    name: API Support
+  description: E-Commerce API for clothes
+  title: Go + Gin CityViBe
 paths:
   /Invoice:
     get:
