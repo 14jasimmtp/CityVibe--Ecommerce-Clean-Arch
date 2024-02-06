@@ -34,7 +34,7 @@ jobs:
          username: ubuntu
          key: ${{secrets.SSH_KEY}}
          script: |
-           cd CleanArch-lapify/
+           cd CityVibe-Project-Clean-Architecture/
            git pull
            go build ./
            sudo systemctl restart cityvibe.service
