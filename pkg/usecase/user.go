@@ -69,35 +69,37 @@ func (clean *UserUseCase) SignUp(User models.UserSignUpDetails) error {
 	return nil
 }
 
-func (clean *UserUseCase) UserLogin(user models.UserLoginDetails) error {
+func (clean *UserUseCase) UserLogin(user models.UserLoginDetails) (*models.UserLoginResponse,string,error) {
 	CheckPhone, err := clean.UserRepo.CheckUserExistsByPhone(user.Phone)
 	if err != nil {
-		return errors.New("error with server")
+		return nil,"",errors.New("error with server")
 	}
 	if CheckPhone == nil {
-		return errors.New("phone number doesn't exist")
+		return nil,"",errors.New("phone number doesn't exist")
 	}
 	userdetails, err := clean.UserRepo.FindUserByPhone(user.Phone)
 	fmt.Println(userdetails, user.Password)
 	if err != nil {
-		return err
+		return nil,"",err
 	}
 
 	if userdetails.Blocked {
-		return errors.New("user is blocked")
+		return nil,"",errors.New("user is blocked")
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(userdetails.Password), []byte(user.Password))
 	if err != nil {
-		return errors.New("password not matching")
+		return nil,"",errors.New("password not matching")
 	}
-	sentOtp := utils.SendOtp(user.Phone)
-	if sentOtp != nil {
-		fmt.Println("error gen otp")
-		return errors.New("error occured generating otp")
+	Tokenstring, err := utils.TokenGenerate(userdetails, "user")
+	if err != nil {
+		fmt.Println(err)
+		return nil,"",errors.New("error generating token")
 	}
+	var ResUser models.UserLoginResponse
+	copier.Copy(&ResUser, &userdetails)
 
-	return nil
+	return &ResUser,Tokenstring,nil
 }
 
 func (clean *UserUseCase) ForgotPassword(phone string) error {

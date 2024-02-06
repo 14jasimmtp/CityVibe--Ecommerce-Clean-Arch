@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	err := godotenv.Load("/etc/secrets/.env")
+	err := godotenv.Load("/home/jasim/CityVibe-Ecommerce-CleanCode-Project/.env")
 	if err != nil {
 		log.Fatal("Error loading .env file", err)
 	}
@@ -25,7 +25,7 @@ func main() {
 	// docs.SwaggerInfo.Version = "1.0"
 
 	docs.SwaggerInfo.Title = "CiTyViBe"
-	// // docs.SwaggerInfo.Host = "cityvibe.shop"
+	// docs.SwaggerInfo.Host = "cityvibe.shop"
 	// docs.SwaggerInfo.Host = "localhost:3000"
 
 	di.InitialiseAPI()

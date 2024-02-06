@@ -69,7 +69,7 @@ func (clean *AdminUseCase) BlockUser(idStr string) error {
 	} else {
 		user.Blocked = true
 	}
-	err = clean.AdminRepo.BlockUserByID(user)
+	err = clean.AdminRepo.BlockUserByID(*user)
 	if err != nil {
 		return err
 	}
@@ -88,7 +88,7 @@ func (clean *AdminUseCase) UnBlockUser(idStr string) error {
 	} else {
 		user.Blocked = false
 	}
-	err = clean.AdminRepo.UnBlockUserByID(user)
+	err = clean.AdminRepo.UnBlockUserByID(*user)
 	if err != nil {
 		return err
 	}

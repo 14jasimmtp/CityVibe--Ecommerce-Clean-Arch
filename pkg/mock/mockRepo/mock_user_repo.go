@@ -124,12 +124,12 @@ func (mr *MockUserRepoMockRecorder) FindUserByPhone(phone interface{}) *gomock.C
 }
 
 // GetUserById mocks base method.
-func (m *MockUserRepo) GetUserById(id int) (models.UserDetailsResponse, error) {
+func (m *MockUserRepo) GetUserById(id int) (*models.UserDetailsResponse, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUserById", id)
 	ret0, _ := ret[0].(models.UserDetailsResponse)
 	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	return &ret0, ret1
 }
 
 // GetUserById indicates an expected call of GetUserById.

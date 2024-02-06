@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/domain"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/models"
 	"github.com/golang-jwt/jwt/v4"
 )
@@ -16,7 +17,7 @@ type ClientClaims struct {
 	jwt.RegisteredClaims
 }
 
-func TokenGenerate(user *models.ClientToken, role string) (string, error) {
+func TokenGenerate(user *domain.User, role string) (string, error) {
 	claims := ClientClaims{
 		ID:    user.ID,
 		Email: user.Email,

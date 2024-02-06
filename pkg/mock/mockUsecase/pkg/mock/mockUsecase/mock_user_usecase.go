@@ -152,11 +152,13 @@ func (mr *MockUserUseCaseMockRecorder) UpdateUserProfile(Token, User interface{}
 }
 
 // UserLogin mocks base method.
-func (m *MockUserUseCase) UserLogin(user models.UserLoginDetails) error {
+func (m *MockUserUseCase) UserLogin(user models.UserLoginDetails) (*models.UserLoginResponse, string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UserLogin", user)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(*models.UserLoginResponse)
+	ret1, _ := ret[1].(string)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // UserLogin indicates an expected call of UserLogin.

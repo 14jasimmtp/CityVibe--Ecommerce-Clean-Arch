@@ -7,7 +7,7 @@ import (
 
 type UserUseCase interface {
 	SignUp(User models.UserSignUpDetails) error
-	UserLogin(user models.UserLoginDetails) error
+	UserLogin(user models.UserLoginDetails) (*models.UserLoginResponse,string,error)
 	ForgotPassword(phone string) error
 	ResetForgottenPassword(Newpassword models.ForgotPassword) error
 	AddAddress(Address models.Address, Token string) (models.AddressRes, error)

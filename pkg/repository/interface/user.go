@@ -10,7 +10,7 @@ type UserRepo interface {
 	CheckUserExistsByPhone(phone string) (*domain.User, error)
 	SignUpUser(user models.UserSignUpDetails) (*models.UserDetailsResponse, error)
 	FindUserByPhone(phone string) (*domain.User, error)
-	GetUserById(id int) (models.UserDetailsResponse, error)
+	GetUserById(id int) (*models.UserDetailsResponse, error)
 	ChangePassword(ResetUser models.ForgotPassword) error
 	AddAddress(Address models.Address, UserId uint) (models.AddressRes, error)
 	UpdateAddress(userid uint, aid string, Address models.Address) (models.AddressRes, error)

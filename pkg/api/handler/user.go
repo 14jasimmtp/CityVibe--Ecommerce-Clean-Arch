@@ -74,15 +74,14 @@ func (clean *UserHandler) UserLogin(c *gin.Context) {
 		return
 	}
 
-	err = clean.UserUsecase.UserLogin(User)
+	user,Tokenstring,err := clean.UserUsecase.UserLogin(User)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	c.JSON(http.StatusOK, gin.H{"message": "Enter otp to login"})
-
+	c.SetCookie("Authorisation", Tokenstring, 3600, "", "", false, true)
+	c.JSON(http.StatusOK, gin.H{"message": "user successfully logged in", "user": user})
 }
 
 // @Summary		Verify OTP
@@ -112,12 +111,8 @@ func (clean *UserHandler) VerifyLoginOtp(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	var client models.ClientToken
-	err = copier.Copy(&client, &user)
-	if err != nil {
-		return
-	}
-	Tokenstring, err := utils.TokenGenerate(&client, "user")
+	
+	Tokenstring, err := utils.TokenGenerate(user, "user")
 	if err != nil {
 		return
 	}
