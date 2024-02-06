@@ -9,8 +9,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	mock "github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/mock/mockUsecase/pkg/mock/mockUsecase"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/models"
+	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/usecase/mock"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
@@ -48,7 +48,7 @@ func TestUserLogin(t *testing.T) {
 					LastName:  "muhamwed MTP",
 					Email:     "jasimmtp84@gmail.com",
 					Phone:     "9496705233",
-				},"tokenString", nil)
+				}, "tokenString", nil)
 			},
 			expectedJSON:   `{"message":"user successfully logged in","user":{"ID":9,"firstname":"jasim","lastname":"muhamwed MTP","email":"jasimmtp84@gmail.com","phone":"9496705233"}}`,
 			expectedStatus: http.StatusOK,
@@ -63,7 +63,7 @@ func TestUserLogin(t *testing.T) {
 				if err != nil {
 					fmt.Println("validation failed")
 				}
-				mu.EXPECT().UserLogin(user).Times(1).Return(nil,"" ,errors.New("authentication failed"))
+				mu.EXPECT().UserLogin(user).Times(1).Return(nil, "", errors.New("authentication failed"))
 			},
 			expectedJSON:   `{"error":"authentication failed"}`,
 			expectedStatus: http.StatusBadRequest,
@@ -91,63 +91,62 @@ func TestUserLogin(t *testing.T) {
 
 }
 
-
-func Test_UserSignUp(t *testing.T){
+func Test_UserSignUp(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	ctrl:=gomock.NewController(t)
-	userUsecase:=mock.NewMockUserUseCase(ctrl)
-	userHandler:=NewUserHandler(userUsecase)
+	ctrl := gomock.NewController(t)
+	userUsecase := mock.NewMockUserUseCase(ctrl)
+	userHandler := NewUserHandler(userUsecase)
 
-	tests:=map[string]struct{
-		input models.UserSignUpDetails
-		configureUserUseCaseMock func(mock.MockUserUseCase,models.UserSignUpDetails)
-		ExpectedJSON string
-		ExpectedStatus int
+	tests := map[string]struct {
+		input                    models.UserSignUpDetails
+		configureUserUseCaseMock func(mock.MockUserUseCase, models.UserSignUpDetails)
+		ExpectedJSON             string
+		ExpectedStatus           int
 	}{
-		"valid signup":{
+		"valid signup": {
 			input: models.UserSignUpDetails{
-				FirstName: "jasim",
-				LastName: "mtp",
-				Email: "jasimmtp@gmail.com",
-				Password: "jasi1234",
+				FirstName:       "jasim",
+				LastName:        "mtp",
+				Email:           "jasimmtp@gmail.com",
+				Password:        "jasi1234",
 				ConfirmPassword: "jasi1234",
-				Phone: "9496705233",
+				Phone:           "9496705233",
 			},
-			configureUserUseCaseMock: func(mu mock.MockUserUseCase,user models.UserSignUpDetails){
+			configureUserUseCaseMock: func(mu mock.MockUserUseCase, user models.UserSignUpDetails) {
 				_, err := utils.Validation(user)
 				if err != nil {
 					fmt.Println("validation failed")
 				}
 				mu.EXPECT().SignUp(user).Times(1).Return(nil)
 			},
-			ExpectedJSON: `{"message": "Successfully signed up.Enter otp to login."}`,
+			ExpectedJSON:   `{"message": "Successfully signed up.Enter otp to login."}`,
 			ExpectedStatus: http.StatusOK,
 		},
-		"Invalid signup":{
+		"Invalid signup": {
 			input: models.UserSignUpDetails{
-				FirstName: "jasim",
-				LastName: "mtp",
-				Email: "jasimmtp@gmail.com",
-				Password: "jasi1234",
+				FirstName:       "jasim",
+				LastName:        "mtp",
+				Email:           "jasimmtp@gmail.com",
+				Password:        "jasi1234",
 				ConfirmPassword: "jasi1234",
-				Phone: "9496705233",
+				Phone:           "9496705233",
 			},
-			configureUserUseCaseMock: func(mu mock.MockUserUseCase,user models.UserSignUpDetails){
+			configureUserUseCaseMock: func(mu mock.MockUserUseCase, user models.UserSignUpDetails) {
 				_, err := utils.Validation(user)
 				if err != nil {
 					fmt.Println("validation failed")
 				}
 				mu.EXPECT().SignUp(user).Times(1).Return(errors.New("authentication error"))
 			},
-			ExpectedJSON: `{"error":"authentication error"}`,
+			ExpectedJSON:   `{"error":"authentication error"}`,
 			ExpectedStatus: http.StatusBadRequest,
 		},
 	}
 
-	for testname, tt:=range tests{
-		t.Run(testname,func(t *testing.T) {
-			tt.configureUserUseCaseMock(*userUsecase,tt.input)
+	for testname, tt := range tests {
+		t.Run(testname, func(t *testing.T) {
+			tt.configureUserUseCaseMock(*userUsecase, tt.input)
 			router := gin.Default()
 			router.POST("/signup", userHandler.UserSignup)
 			jsonData, err := json.Marshal(tt.input)
