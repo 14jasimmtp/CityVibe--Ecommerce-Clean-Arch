@@ -8,6 +8,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+
 func main() {
 	err := godotenv.Load("/home/jasim/CityVibe-Ecommerce-CleanCode-Project/.env")
 	if err != nil {
