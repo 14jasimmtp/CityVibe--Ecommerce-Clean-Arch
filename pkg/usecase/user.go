@@ -143,6 +143,7 @@ func (clean *UserUseCase) FindUserByPhone(phone string) (*domain.User, error){
 }
 
 func (clean *UserUseCase) AddAddress(Address models.Address, Token string) (models.AddressRes, error) {
+	fmt.Println(Token)
 	UserId, err := utils.ExtractUserIdFromToken(Token)
 	if err != nil {
 		return models.AddressRes{}, err
