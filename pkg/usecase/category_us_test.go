@@ -26,7 +26,6 @@ func TestGetCategory(t *testing.T) {
 		mockCategoryRepo.EXPECT().GetCategory().Return(expectedCategories, nil)
 
 		result, err := categoryUseCase.GetCategory()
-
 		assert.NoError(t, err)
 		assert.Equal(t, expectedCategories, result)
 	})
@@ -42,3 +41,5 @@ func TestGetCategory(t *testing.T) {
 		assert.EqualError(t, err, mockError.Error())
 	})
 }
+
+

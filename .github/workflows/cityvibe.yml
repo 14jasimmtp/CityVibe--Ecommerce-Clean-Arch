@@ -23,9 +23,7 @@ jobs:
 
     - name: Test
       run: go test -v ./...
-
-
-
+      
 
     # - name: Deploy to AWS EC2 instance
     #   uses: appleboy/ssh-action@master

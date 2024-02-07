@@ -74,6 +74,7 @@ func TestUserLogin(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			tt.configureUserUseCaseMock(*userUsecase, tt.inputData)
 			router := gin.Default()
+
 			router.POST("/login", userHandler.UserLogin)
 			jsonData, err := json.Marshal(tt.inputData)
 			assert.NoError(t, err)

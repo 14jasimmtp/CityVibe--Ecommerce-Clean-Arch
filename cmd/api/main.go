@@ -10,7 +10,7 @@ import (
 
 
 func main() {
-	err := godotenv.Load("/home/jasim/CityVibe-Ecommerce-CleanCode-Project/.env")
+	err := godotenv.Load("/home/ubuntu/CityVibe-Project-Clean-Architecture/.env")
 	if err != nil {
 		log.Fatal("Error loading .env file", err)
 	}
