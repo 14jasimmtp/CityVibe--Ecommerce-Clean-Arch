@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cityvibe-deployment
+  labels:
+    app: cityvibe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cityvibe
+  template:
+    metadata:
+      labels:
+        app: cityvibe
+    spec:
+      containers:
+      - name: cityvibe
+        image: muhamedjasim/cityvibe1:latest
+        ports:
+        - containerPort: 3000
+        env:
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: postgres-user
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: postgres-secret
+                key: postgres-password
+          - name: DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config
+                key: postgres-db
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config
+                key: postgres-host
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: postgres-config
+                key: postgres-port
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cityvibe-service
+spec:
+  type: NodePort
+  selector:
+    app: cityvibe
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30001  

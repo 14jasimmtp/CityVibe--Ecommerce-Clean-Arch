@@ -21,9 +21,11 @@ func DBInitialise() (*gorm.DB) {
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_NAME"),
 		os.Getenv("DB_PORT"),
+
 	)
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
+		fmt.Println(dsn)
 		panic("error while connecting database")
 	}
 	DB.AutoMigrate(&domain.User{})

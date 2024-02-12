@@ -2,17 +2,24 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/docs"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/di"
 	"github.com/joho/godotenv"
 )
 
-
 func main() {
-	err := godotenv.Load("/home/ubuntu/CityVibe-Project-Clean-Architecture/.env")
+	wd, err := os.Getwd()
 	if err != nil {
-		log.Fatal("Error loading .env file", err)
+		log.Fatal("Error getting current working directory:", err)
+	}
+
+	envPath := wd + "/.env"
+
+	err = godotenv.Load(envPath)
+	if err != nil {
+		log.Fatal("Error loading .env file:", err)
 	}
 
 	//	@title						Go + Gin CityViBe
