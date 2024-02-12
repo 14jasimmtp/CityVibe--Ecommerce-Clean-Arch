@@ -23,7 +23,7 @@ func NewProductUsecase(repo interfaceRepo.ProductRepo) interfaceUsecase.ProductU
 func (clean *ProductUseCase) AddProduct(product models.AddProduct, image *multipart.FileHeader) (models.UpdateProduct, error) {
 	sess := utils.CreateSession()
 	// fmt.Println("sess", sess)
-
+	
 	ImageURL, err := utils.UploadImageToS3(image, sess)
 	if err != nil {
 		fmt.Println("err:", err)
