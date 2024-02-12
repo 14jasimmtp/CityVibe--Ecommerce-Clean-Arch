@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+
 type AdminMiddleware struct{}
 
 func NewAdminMiddleware()*AdminMiddleware{
