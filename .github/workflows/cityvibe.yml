@@ -25,14 +25,14 @@ jobs:
       run: go test -v ./...
       
 
-    # - name: Deploy to AWS EC2 instance
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #      host: ${{secrets.PUBLIC_IP}}
-    #      username: ubuntu
-    #      key: ${{secrets.SSH_KEY}}
-    #      script: |
-    #        cd CityVibe-Project-Clean-Architecture/
-    #        git pull
-    #        go build ./
-    #        sudo systemctl restart cityvibe.service
+    - name: Deploy to AWS EC2 instance
+      uses: appleboy/ssh-action@master
+      with:
+         host: ${{secrets.PUBLIC_IP}}
+         username: ubuntu
+         key: ${{secrets.SSH_KEY}}
+         script: |
+           cd CityVibe-Project-Clean-Architecture/
+           git pull
+           go build -o main cmd/api/main.go
+           sudo systemctl restart cityvibe.service
