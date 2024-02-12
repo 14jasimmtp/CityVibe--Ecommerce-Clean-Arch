@@ -2,6 +2,5 @@
 #ignore env
 .env
 
-#ignore postgres k8s config and secret
-postgres-config.yaml
+#ignore postgres k8s  secret
 postgres-secret.yaml
