@@ -2,8 +2,8 @@ package db
 
 import (
 	"fmt"
-	"os"
 
+	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/config"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/domain"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -11,17 +11,16 @@ import (
 
 var DB *gorm.DB
 
-func DBInitialise() (*gorm.DB) {
+func DBInitialise(cfg config.Config) *gorm.DB {
 	var err error
 
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Shanghai",
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_NAME"),
-		os.Getenv("DB_PORT"),
-
+		cfg.DBHost,
+		cfg.DBUser,
+		cfg.DBPassword,
+		cfg.DBName,
+		cfg.DBPort,
 	)
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

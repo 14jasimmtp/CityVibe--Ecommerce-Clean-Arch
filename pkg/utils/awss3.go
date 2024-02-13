@@ -2,9 +2,10 @@ package utils
 
 import (
 	"fmt"
+	"log"
 	"mime/multipart"
-	"os"
 
+	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/config"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -12,12 +13,16 @@ import (
 )
 
 func CreateSession() *session.Session {
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
 	sess := session.Must(session.NewSession(
 		&aws.Config{
-			Region: aws.String(os.Getenv("AwsRegion")),
+			Region: aws.String(cfg.Aws_region),
 			Credentials: credentials.NewStaticCredentials(
-				os.Getenv("AwsAccessKey"),
-				os.Getenv("AwsSecretKey"),
+				cfg.Aws_access,
+				cfg.Aws_secret,
 				"",
 			),
 		},

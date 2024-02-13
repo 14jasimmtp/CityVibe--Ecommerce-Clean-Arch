@@ -3,8 +3,9 @@ package usecase
 import (
 	"errors"
 	"fmt"
-	"os"
+	"log"
 
+	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/config"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/models"
 	interfaceRepo "github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/repository/interface"
 	interfaceUsecase "github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/usecase/interface"
@@ -16,17 +17,21 @@ type PaymentUseCase struct {
 	PaymentRepo interfaceRepo.PaymentRepo
 }
 
-func NewPaymentUsecase(repo interfaceRepo.PaymentRepo) interfaceUsecase.PaymentUsecase{
+func NewPaymentUsecase(repo interfaceRepo.PaymentRepo) interfaceUsecase.PaymentUsecase {
 	return &PaymentUseCase{PaymentRepo: repo}
 }
 
 func (clean *PaymentUseCase) MakePaymentRazorPay(orderID int) (models.Payment, string, error) {
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
 	PaymentDetails, err := clean.PaymentRepo.GetPaymentDetails(orderID)
 	if err != nil {
 		return models.Payment{}, "", err
 	}
 
-	client := razorpay.NewClient(os.Getenv("KEY_ID_PAY"), os.Getenv("KEY_SECRET_PAY"))
+	client := razorpay.NewClient(cfg.KEY_ID_FOR_PAY, cfg.SECRET_KEY_FOR_PAY)
 
 	data := map[string]interface{}{
 		"amount":   int(PaymentDetails.Final_price * 100),
@@ -69,6 +74,10 @@ func (clean *PaymentUseCase) PaymentAlreadyPaid(orderID int) (bool, error) {
 }
 
 func (clean *PaymentUseCase) VerifyPayment(details models.PaymentVerify, order_id int) (models.OrderDetails, error) {
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
 	paid, err := clean.PaymentRepo.CheckVerifiedPayment(order_id)
 	if err != nil {
 		return models.OrderDetails{}, err
@@ -77,7 +86,7 @@ func (clean *PaymentUseCase) VerifyPayment(details models.PaymentVerify, order_i
 		return models.OrderDetails{}, errors.New(`already payment verified`)
 	}
 
-	result := utils.VerifyPayment(details.OrderID, details.PaymentID, details.Signature, os.Getenv("KEY_SECRET_PAY"))
+	result := utils.VerifyPayment(details.OrderID, details.PaymentID, details.Signature, cfg.SECRET_KEY_FOR_PAY)
 	if !result {
 		return models.OrderDetails{}, errors.New("payment is unsuccessful")
 	}

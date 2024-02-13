@@ -2,9 +2,10 @@ package utils
 
 import (
 	"fmt"
-	"os"
+	"log"
 	"time"
 
+	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/config"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/domain"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/models"
 	"github.com/golang-jwt/jwt/v4"
@@ -18,6 +19,10 @@ type ClientClaims struct {
 }
 
 func TokenGenerate(user *domain.User, role string) (string, error) {
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
 	claims := ClientClaims{
 		ID:    user.ID,
 		Email: user.Email,
@@ -29,7 +34,7 @@ func TokenGenerate(user *domain.User, role string) (string, error) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	TokenString, err := token.SignedString([]byte(os.Getenv("TOKENSECRETKEY")))
+	TokenString, err := token.SignedString([]byte(cfg.KEY))
 	if err != nil {
 		return "", err
 	}
@@ -37,6 +42,10 @@ func TokenGenerate(user *domain.User, role string) (string, error) {
 }
 
 func AdminTokenGenerate(user models.Admin, role string) (string, error) {
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
 	claims := ClientClaims{
 		ID:    user.ID,
 		Email: user.Email,
@@ -48,7 +57,7 @@ func AdminTokenGenerate(user models.Admin, role string) (string, error) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	TokenString, err := token.SignedString([]byte(os.Getenv("TOKENSECRETKEY")))
+	TokenString, err := token.SignedString([]byte(cfg.KEY))
 	if err != nil {
 		return "", err
 	}
@@ -56,12 +65,16 @@ func AdminTokenGenerate(user models.Admin, role string) (string, error) {
 }
 
 func GetRoleFromToken(Token string) (string, error) {
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
 	TokenUnpacked, err := jwt.ParseWithClaims(Token, &ClientClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			fmt.Println("1")
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return []byte(os.Getenv("TOKENSECRETKEY")), nil
+		return []byte(cfg.KEY), nil
 	})
 	if err != nil {
 		fmt.Println("2")
@@ -77,13 +90,17 @@ func GetRoleFromToken(Token string) (string, error) {
 }
 
 func ExtractUserIdFromToken(Token string) (uint, error) {
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	TokenUnpacked, err := jwt.ParseWithClaims(Token, &ClientClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			fmt.Println("1")
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
-		return []byte(os.Getenv("TOKENSECRETKEY")), nil
+		return []byte(cfg.KEY), nil
 	})
 	if err != nil {
 

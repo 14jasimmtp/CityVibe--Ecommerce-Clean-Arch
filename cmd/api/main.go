@@ -2,24 +2,16 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/docs"
+	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/config"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/di"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	wd, err := os.Getwd()
-	if err != nil {
-		log.Fatal("Error getting current working directory:", err)
-	}
-
-	envPath := wd + "/.env"
-
-	err = godotenv.Load(envPath)
-	if err != nil {
-		log.Fatal("Error loading .env file:", err)
+	config, configErr := config.LoadConfig()
+	if configErr != nil {
+		log.Fatal("cannot load config: ", configErr)
 	}
 
 	//	@title						Go + Gin CityViBe
@@ -36,5 +28,5 @@ func main() {
 	// docs.SwaggerInfo.Host = "cityvibe.shop"
 	// docs.SwaggerInfo.Host = "localhost:3000"
 
-	di.InitialiseAPI()
+	di.InitialiseAPI(config)
 }

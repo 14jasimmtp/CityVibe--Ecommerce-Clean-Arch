@@ -4,13 +4,14 @@ import (
 	server "github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/api"
 	handlers "github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/api/handler"
 	middlewares "github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/api/middleware"
+	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/config"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/db"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/repository"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/usecase"
 )
 
-func InitialiseAPI() {
-	DB:=db.DBInitialise()
+func InitialiseAPI(cfg config.Config) {
+	DB:=db.DBInitialise(cfg)
 
 	userMiddleware:=middlewares.NewUserMiddleware()
 	adminMiddleware:=middlewares.NewAdminMiddleware()

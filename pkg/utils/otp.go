@@ -3,16 +3,21 @@ package utils
 import (
 	"errors"
 	"fmt"
-	"os"
+	"log"
 
+	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/config"
 	"github.com/twilio/twilio-go"
 	openapi "github.com/twilio/twilio-go/rest/verify/v2"
 )
 
 func SendOtp(to string) error {
-	var TWILIO_ACCOUNT_SID string = os.Getenv("TWILIO_ACCOUNT_SID")
-	var TWILIO_AUTH_TOKEN string = os.Getenv("TWILIO_AUTH_TOKEN")
-	var VERIFY_SERVICE_SID string = os.Getenv("VERIFY_SERVICE_SID")
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+	var TWILIO_ACCOUNT_SID string = cfg.ACCOUNTSID
+	var TWILIO_AUTH_TOKEN string = cfg.AUTHTOKEN
+	var VERIFY_SERVICE_SID string = cfg.SERVICESSID
 	var client *twilio.RestClient = twilio.NewRestClientWithParams(twilio.ClientParams{
 		Username: TWILIO_ACCOUNT_SID,
 		Password: TWILIO_AUTH_TOKEN,
@@ -36,9 +41,13 @@ func SendOtp(to string) error {
 }
 
 func CheckOtp(to string, code string) error {
-	var TWILIO_ACCOUNT_SID string = os.Getenv("TWILIO_ACCOUNT_SID")
-	var TWILIO_AUTH_TOKEN string = os.Getenv("TWILIO_AUTH_TOKEN")
-	var VERIFY_SERVICE_SID string = os.Getenv("VERIFY_SERVICE_SID")
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+	var TWILIO_ACCOUNT_SID string = cfg.ACCOUNTSID
+	var TWILIO_AUTH_TOKEN string = cfg.AUTHTOKEN
+	var VERIFY_SERVICE_SID string = cfg.SERVICESSID
 	var client *twilio.RestClient = twilio.NewRestClientWithParams(twilio.ClientParams{
 		Username: TWILIO_ACCOUNT_SID,
 		Password: TWILIO_AUTH_TOKEN,
