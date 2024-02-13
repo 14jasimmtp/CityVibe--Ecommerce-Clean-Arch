@@ -12,7 +12,6 @@ require (
 	github.com/golang/mock v1.6.0
 	github.com/jackc/pgx v3.6.2+incompatible
 	github.com/jinzhu/copier v0.4.0
-	github.com/joho/godotenv v1.5.1
 	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/razorpay/razorpay-go v1.3.1
 	github.com/spf13/viper v1.18.2
