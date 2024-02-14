@@ -52,7 +52,7 @@ kind: Service
 metadata:
   name: cityvibe-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: cityvibe
   ports:

@@ -17,10 +17,10 @@ services:
     restart: on-failure
     environment:
       DB_HOST: "postgres"
-      DB_NAME: "cityvibe"
+      DB_NAME: "postgres"
       DB_USER: "postgres"
       DB_PORT: "5432"
-      DB_PASSWORD: "jasi123"
+      DB_PASSWORD: "postgres"
     depends_on:
       - postgres
     networks:

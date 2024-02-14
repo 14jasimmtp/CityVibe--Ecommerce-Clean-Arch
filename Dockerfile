@@ -11,6 +11,7 @@ RUN go test -v ./...
 FROM gcr.io/distroless/base-debian11 AS build-release-stage
 WORKDIR /
 COPY --from=build-stage /app/cityvibe /cityvibe
+COPY --from=build-stage /app/.env /
 USER nonroot:nonroot
 EXPOSE 3000
 
