@@ -13,7 +13,7 @@ services:
       - database-postgres:/var/lib/postgresql/data
 
   cityvibe:
-    image: muhamedjasim/city1
+    image: city
     restart: on-failure
     environment:
       DB_HOST: "postgres"
