@@ -20,8 +20,8 @@ type AdminUseCase struct {
 	OrderRepo interfaceRepo.OrderRepo
 }
 
-func NewAdminUsecase(repo interfaceRepo.AdminRepo) interfaceUsecase.AdminUsecase {
-	return &AdminUseCase{AdminRepo: repo}
+func NewAdminUsecase(Adminrepo interfaceRepo.AdminRepo,Userrepo interfaceRepo.UserRepo,Product interfaceRepo.ProductRepo,Order interfaceRepo.OrderRepo) interfaceUsecase.AdminUsecase {
+	return &AdminUseCase{AdminRepo: Adminrepo,UserRepo: Userrepo,ProductRepo: Product,OrderRepo: Order}
 }
 
 func (clean *AdminUseCase) AdminLogin(admin models.AdminLogin) (models.Admin, error) {
@@ -202,9 +202,12 @@ func (clean *AdminUseCase) DashBoard() (models.CompleteAdminDashboard, error) {
 func (clean *AdminUseCase) ExecuteAddOffer(offer *models.Offer) error {
 	err := clean.AdminRepo.CreateOffer(offer)
 	if err != nil {
+		
 		return errors.New("error creating offer")
 	} else {
 		return nil
 	}
 }
+
+
 

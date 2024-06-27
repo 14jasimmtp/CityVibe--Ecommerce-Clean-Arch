@@ -8,7 +8,6 @@ import (
 type UserRepo interface {
 	CheckUserExistsEmail(email string) (*domain.User, error)
 	CheckUserExistsByPhone(phone string) (*domain.User, error)
-	SignUpUser(user models.UserSignUpDetails) (*models.UserDetailsResponse, error)
 	FindUserByPhone(phone string) (*domain.User, error)
 	GetUserById(id int) (*models.UserDetailsResponse, error)
 	ChangePassword(ResetUser models.ForgotPassword) error

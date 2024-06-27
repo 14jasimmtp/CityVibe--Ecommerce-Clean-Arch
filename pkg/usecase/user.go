@@ -22,6 +22,8 @@ func NewUserUsecase(repo interfaceRepo.UserRepo) interfaceUsecase.UserUseCase{
 	return &UserUseCase{UserRepo: repo}
 }
 
+func User(){}
+
 func (clean *UserUseCase) SignUp(User models.UserSignUpDetails) error {
 	CheckEmail, err := clean.UserRepo.CheckUserExistsEmail(User.Email)
 	if err != nil {

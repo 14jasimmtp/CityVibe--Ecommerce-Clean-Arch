@@ -18,6 +18,7 @@ type ClientClaims struct {
 	jwt.RegisteredClaims
 }
 
+
 func TokenGenerate(user *domain.User, role string) (string, error) {
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -77,7 +78,6 @@ func GetRoleFromToken(Token string) (string, error) {
 		return []byte(cfg.KEY), nil
 	})
 	if err != nil {
-		fmt.Println("2")
 		fmt.Println(err)
 		return "", err
 	}

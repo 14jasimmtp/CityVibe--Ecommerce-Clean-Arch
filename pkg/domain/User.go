@@ -12,7 +12,7 @@ type User struct {
 	Password   string  `json:"-" validate:"min=8,max=20"`
 	Blocked    bool    `json:"blocked" gorm:"default:false"`
 	Wallet     float64 `json:"wallet" gorm:"default:0"`
-}
+}	
 
 type Address struct {
 	Id        int    `json:"id" gorm:"unique;not null"`

@@ -16,14 +16,13 @@ type ProductUseCase struct {
 	ProductRepo interfaceRepo.ProductRepo
 }
 
-func NewProductUsecase(repo interfaceRepo.ProductRepo) interfaceUsecase.ProductUsecase{
+func NewProductUsecase(repo interfaceRepo.ProductRepo) interfaceUsecase.ProductUsecase {
 	return &ProductUseCase{ProductRepo: repo}
 }
 
 func (clean *ProductUseCase) AddProduct(product models.AddProduct, image *multipart.FileHeader) (models.UpdateProduct, error) {
 	sess := utils.CreateSession()
 	// fmt.Println("sess", sess)
-	
 	ImageURL, err := utils.UploadImageToS3(image, sess)
 	if err != nil {
 		fmt.Println("err:", err)
@@ -116,4 +115,3 @@ func (clean *ProductUseCase) FilterProducts(category, size string, minPrice, max
 	}
 	return filteredProducts, nil
 }
-

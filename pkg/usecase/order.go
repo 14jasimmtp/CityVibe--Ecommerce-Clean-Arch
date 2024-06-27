@@ -24,8 +24,8 @@ type OrderUseCase struct {
 	CartRepo    interfaceRepo.CartRepo
 }
 
-func NewOrderUsecase(repo interfaceRepo.OrderRepo) interfaceUsecase.OrderUseCase {
-	return &OrderUseCase{OrderRepo: repo}
+func NewOrderUsecase(Orderrepo interfaceRepo.OrderRepo,Couponrepo interfaceRepo.CouponRepo,Userrepo interfaceRepo.UserRepo,Paymentrepo interfaceRepo.PaymentRepo, cartrepo interfaceRepo.CartRepo) interfaceUsecase.OrderUseCase {
+	return &OrderUseCase{OrderRepo: Orderrepo,CouponRepo: Couponrepo,UserRepo: Userrepo,PaymentRepo: Paymentrepo,CartRepo: cartrepo}
 }
 
 func (clean *OrderUseCase) CheckOut(Token string) (interface{}, error) {

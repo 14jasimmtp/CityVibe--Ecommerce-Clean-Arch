@@ -29,6 +29,7 @@ func (clean *UserRepo) CheckUserExistsEmail(email string) (*domain.User, error) 
 		}
 		return nil, result.Error
 	}
+	
 	return &user, nil
 
 }
@@ -43,16 +44,6 @@ func (clean *UserRepo) CheckUserExistsByPhone(phone string) (*domain.User, error
 		return nil, result.Error
 	}
 	return &user, nil
-}
-
-func (clean *UserRepo) SignUpUser(user models.UserSignUpDetails) (*models.UserDetailsResponse, error) {
-	var User models.UserDetailsResponse
-
-	result := clean.DB.Raw("INSERT INTO users(firstname,lastname,email,phone,password) VALUES(?,?,?,?,?)", user.FirstName, user.LastName, user.Email, user.Phone, user.Password).Scan(&User)
-	if result.Error != nil {
-		return nil, result.Error
-	}
-	return &User, nil
 }
 
 func (clean *UserRepo) FindUserByPhone(phone string) (*domain.User, error) {

@@ -15,7 +15,7 @@ type CartUseCase struct {
 	CartRepo interfaceRepo.CartRepo
 }
 
-func NewCartUsecase(repo interfaceRepo.CartRepo) interfaceUsecase.CartUsecase{
+func NewCartUsecase(repo interfaceRepo.CartRepo) interfaceUsecase.CartUsecase {
 	return &CartUseCase{CartRepo: repo}
 }
 
@@ -65,8 +65,8 @@ func (clean *CartUseCase) AddToCart(pid, Token string) (models.CartResponse, err
 	}
 	true, err := clean.CartRepo.CheckProductExistInCart(UserId, pid)
 	if err != nil {
-		return models.CartResponse{}, err 
-		
+		return models.CartResponse{}, err
+
 	}
 	fmt.Println(true)
 	if true {

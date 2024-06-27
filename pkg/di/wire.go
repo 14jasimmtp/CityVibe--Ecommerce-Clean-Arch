@@ -11,46 +11,46 @@ import (
 )
 
 func InitialiseAPI(cfg config.Config) {
-	DB:=db.DBInitialise(cfg)
+	DB := db.DBInitialise(cfg)
+	
+	userMiddleware := middlewares.NewUserMiddleware()
+	adminMiddleware := middlewares.NewAdminMiddleware()
+ 
+	userRepository := repository.NewUserRepo(DB)
+	userUsecase := usecase.NewUserUsecase(userRepository)
+	userHandler := handlers.NewUserHandler(userUsecase)
 
-	userMiddleware:=middlewares.NewUserMiddleware()
-	adminMiddleware:=middlewares.NewAdminMiddleware()
+	productRepository := repository.NewProductRepo(DB)
+	productUsecase := usecase.NewProductUsecase(productRepository)
+	productHandler := handlers.NewProductHandler(productUsecase)
+	
+	cartRepository := repository.NewCartRepo(DB)
+	cartUsecase := usecase.NewCartUsecase(cartRepository)
+	cartHandler := handlers.NewCartHandler(cartUsecase)
 
-	adminRepository:=repository.NewAdminRepo(DB)
-	adminUsecase:=usecase.NewAdminUsecase(adminRepository)
-	adminHandler:=handlers.NewAdminHandler(adminUsecase)
+	categoryRepository := repository.NewCategoryRepo(DB)
+	categoryUsecase := usecase.NewCategoryUsecase(categoryRepository)
+	categoryHandler := handlers.NewCategoryHandler(categoryUsecase)
 
-	userRepository:=repository.NewUserRepo(DB)
-	userUsecase:=usecase.NewUserUsecase(userRepository)
-	userHandler:=handlers.NewUserHandler(userUsecase)
+	couponRepository := repository.NewCouponRepo(DB)
+	couponUsecase := usecase.NewCouponUsecase(couponRepository)
+	couponHandler := handlers.NewCouponHandler(couponUsecase)
 
-	cartRepository:=repository.NewCartRepo(DB)
-	cartUsecase:=usecase.NewCartUsecase(cartRepository)
-	cartHandler:=handlers.NewCartHandler(cartUsecase)
+	paymentRepository := repository.NewPaymentRepo(DB)
+	paymentUsecase := usecase.NewPaymentUsecase(paymentRepository)
+	paymentHandler := handlers.NewPaymentHandler(paymentUsecase)
 
-	categoryRepository:=repository.NewCategoryRepo(DB)
-	categoryUsecase:=usecase.NewCategoryUsecase(categoryRepository)
-	categoryHandler:=handlers.NewCategoryHandler(categoryUsecase)
+	orderRepository := repository.NewOrderRepo(DB)
+	orderUsecase := usecase.NewOrderUsecase(orderRepository,couponRepository,userRepository,paymentRepository,cartRepository)
+	orderHandler := handlers.NewOrderHandler(orderUsecase)
 
-	couponRepository:=repository.NewCouponRepo(DB)
-	couponUsecase:=usecase.NewCouponUsecase(couponRepository)
-	couponHandler:=handlers.NewCouponHandler(couponUsecase)
+	adminRepository := repository.NewAdminRepo(DB)
+	adminUsecase := usecase.NewAdminUsecase(adminRepository,userRepository,productRepository,orderRepository)
+	adminHandler := handlers.NewAdminHandler(adminUsecase)
 
-	orderRepository:=repository.NewOrderRepo(DB)
-	orderUsecase:=usecase.NewOrderUsecase(orderRepository)
-	orderHandler:=handlers.NewOrderHandler(orderUsecase)
-
-	paymentRepository:=repository.NewPaymentRepo(DB)
-	paymentUsecase:=usecase.NewPaymentUsecase(paymentRepository)
-	paymentHandler:=handlers.NewPaymentHandler(paymentUsecase)
-
-	productRepository:=repository.NewProductRepo(DB)
-	productUsecase:=usecase.NewProductUsecase(productRepository)
-	productHandler:=handlers.NewProductHandler(productUsecase)
-
-	wishlistRepository:=repository.NewWishlistRepo(DB)
-	wishlistUsecase:=usecase.NewWishlistUsecase(wishlistRepository)
-	wishlistHandler:=handlers.NewWishlistHandler(wishlistUsecase)
+	wishlistRepository := repository.NewWishlistRepo(DB)
+	wishlistUsecase := usecase.NewWishlistUsecase(wishlistRepository)
+	wishlistHandler := handlers.NewWishlistHandler(wishlistUsecase)
 
 	server.StartServer(
 		userHandler,

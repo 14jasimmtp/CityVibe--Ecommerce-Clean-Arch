@@ -74,7 +74,7 @@ func (clean *UserHandler) UserLogin(c *gin.Context) {
 		return
 	}
 
-	user,Tokenstring,err := clean.UserUsecase.UserLogin(User)
+	user, Tokenstring, err := clean.UserUsecase.UserLogin(User)
 	if err != nil {
 		fmt.Println(err)
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -111,7 +111,7 @@ func (clean *UserHandler) VerifyLoginOtp(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	
+
 	Tokenstring, err := utils.TokenGenerate(user, "user")
 	if err != nil {
 		return

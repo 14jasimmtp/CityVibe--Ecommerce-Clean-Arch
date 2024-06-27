@@ -15,7 +15,7 @@ type CartRepo struct {
 	DB *gorm.DB
 }
 
-func NewCartRepo(db *gorm.DB) interfaceRepo.CartRepo{
+func NewCartRepo(db *gorm.DB) interfaceRepo.CartRepo {
 	return &CartRepo{DB: db}
 }
 
@@ -108,7 +108,6 @@ func (clean *CartRepo) GetCartProductAmountFromID(pid string) (float64, error) {
 	}
 	return price.Price, nil
 }
-
 
 func (clean *CartRepo) UpdateQuantity(userid uint, pid, quantity string) ([]models.Cart, error) {
 	query := db.DB.Raw(`UPDATE carts SET quantity = ? WHERE user_id = ? AND product_id = ?`, quantity, userid, pid)
