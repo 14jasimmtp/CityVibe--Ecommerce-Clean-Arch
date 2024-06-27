@@ -9,6 +9,8 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/gin-contrib/cors"
+
 )
 
 func StartServer(
@@ -27,6 +29,10 @@ func StartServer(
 	engine := gin.New()
 
 	engine.Use(gin.Logger())
+	engine.Use(cors.New(cors.Config{
+		AllowOrigins: []string{"*"},
+		AllowHeaders: []string{"Origin", "Content-Type", "Accept"},
+	}))
 
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	engine.LoadHTMLFiles("/home/jasim/CityVibe-Ecommerce-CleanCode-Project/template/*")

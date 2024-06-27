@@ -20,13 +20,13 @@ func main() {
 	//	@in							header
 	//	@name						Authorization
 	//	@in							header
+	//  @host 						cityvibe.jasim.online
 	//	@BasePath					/
 	//	@query.collection.format	multi
-	// docs.SwaggerInfo.Version = "1.0"
+	// 	docs.SwaggerInfo.Version = "1.0"
 
 	docs.SwaggerInfo.Title = "CiTyViBe"
-	// docs.SwaggerInfo.Host = "cityvibe.shop"
-	// docs.SwaggerInfo.Host = "localhost:3000"
+	docs.SwaggerInfo.Host = "cityvibe.jasim.online"
 
 	di.InitialiseAPI(config)
 }
