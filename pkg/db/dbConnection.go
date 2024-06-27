@@ -5,6 +5,7 @@ import (
 
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/config"
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/domain"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -44,5 +45,19 @@ func DBInitialise(cfg config.Config) *gorm.DB {
 	DB.AutoMigrate(&domain.UsedCoupon{})
 	DB.AutoMigrate(&domain.Offer{})
 
+	createAdmin(DB)
+
 	return DB
+}
+
+func createAdmin(db *gorm.DB) {
+	email := "admin@cityvibe.com"
+	password := "Admin@123"
+
+	hashed, _ := bcrypt.GenerateFromPassword([]byte(password), 10)
+
+	err := db.FirstOrCreate(&domain.Admin{Email: email, Password: string(hashed)}).Error
+	if err != nil {
+		fmt.Print("failed to create admin")
+	}
 }
