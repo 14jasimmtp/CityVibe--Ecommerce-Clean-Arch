@@ -57,11 +57,11 @@ func (clean *UserUseCase) SignUp(User models.UserSignUpDetails) error {
 	}
 	User.Password = string(HashedPassword)
 
-	sentOtp := utils.SendOtp(User.Phone)
-	if sentOtp != nil {
-		fmt.Println("error gen otp")
-		return errors.New("error occured generating otp")
-	}
+	// sentOtp := utils.SendOtp(User.Phone)
+	// if sentOtp != nil {
+	// 	fmt.Println("error gen otp")
+	// 	return errors.New("error occured generating otp")
+	// }
 	var Userdt domain.User
 	err = copier.Copy(&Userdt, &User)
 	if err != nil {
@@ -72,14 +72,14 @@ func (clean *UserUseCase) SignUp(User models.UserSignUpDetails) error {
 }
 
 func (clean *UserUseCase) UserLogin(user models.UserLoginDetails) (*models.UserLoginResponse,string,error) {
-	CheckPhone, err := clean.UserRepo.CheckUserExistsByPhone(user.Phone)
+	CheckPhone, err := clean.UserRepo.CheckUserExistsEmail(user.Email)
 	if err != nil {
 		return nil,"",errors.New("error with server")
 	}
 	if CheckPhone == nil {
-		return nil,"",errors.New("phone number doesn't exist")
+		return nil,"",errors.New("email  doesn't exist")
 	}
-	userdetails, err := clean.UserRepo.FindUserByPhone(user.Phone)
+	userdetails, err := clean.UserRepo.FindUserByPhone(CheckPhone.Phone)
 	fmt.Println(userdetails, user.Password)
 	if err != nil {
 		return nil,"",err

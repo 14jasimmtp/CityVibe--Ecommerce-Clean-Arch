@@ -2,24 +2,21 @@ package middlewares
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/utils"
 	"github.com/gin-gonic/gin"
 )
 
-
 type AdminMiddleware struct{}
 
-func NewAdminMiddleware()*AdminMiddleware{
+func NewAdminMiddleware() *AdminMiddleware {
 	return &AdminMiddleware{}
 }
 
-func (mid *AdminMiddleware)AdminAuthMiddleware(c *gin.Context) {
-	Token, err := c.Cookie("Authorisation")
-	if err != nil {
-		c.AbortWithStatus(http.StatusUnauthorized)
-	}
-	role, err := utils.GetRoleFromToken(Token)
+func (mid *AdminMiddleware) AdminAuthMiddleware(c *gin.Context) {
+	tokenString := strings.TrimPrefix(c.GetHeader("Authorization"), "Bearer ")
+	role, err := utils.GetRoleFromToken(tokenString)
 	if err != nil {
 		c.AbortWithStatus(http.StatusUnauthorized)
 	}

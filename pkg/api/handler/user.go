@@ -80,8 +80,7 @@ func (clean *UserHandler) UserLogin(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.SetCookie("Authorisation", Tokenstring, 3600, "", "", false, true)
-	c.JSON(http.StatusOK, gin.H{"message": "user successfully logged in", "user": user})
+	c.JSON(http.StatusOK, gin.H{"message": "user successfully logged in", "user": user, "token": Tokenstring})
 }
 
 // @Summary		Verify OTP

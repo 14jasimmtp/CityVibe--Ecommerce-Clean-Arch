@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/14jasimmtp/CityVibe-Project-Clean-Architecture/pkg/utils"
 	"github.com/gin-gonic/gin"
@@ -9,17 +10,13 @@ import (
 
 type UserMiddleware struct{}
 
-func NewUserMiddleware() *UserMiddleware{
+func NewUserMiddleware() *UserMiddleware {
 	return &UserMiddleware{}
 }
 
 func (mid *UserMiddleware) UserAuthMiddleware(c *gin.Context) {
-	Token, err := c.Cookie("Authorisation")
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "login to view page"})
-		c.AbortWithStatus(http.StatusUnauthorized)
-	}
-	role, err := utils.GetRoleFromToken(Token)
+	tokenString := strings.TrimPrefix(c.GetHeader("Authorization"), "Bearer ")
+	role, err := utils.GetRoleFromToken(tokenString)
 	if err != nil {
 		c.AbortWithStatus(http.StatusUnauthorized)
 	}
