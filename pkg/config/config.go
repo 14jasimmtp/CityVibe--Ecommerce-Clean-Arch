@@ -32,7 +32,7 @@ var envs = []string{
 
 func LoadConfig() (Config, error) {
 	var confg Config
-	viper.AddConfigPath("./")
+	viper.AddConfigPath("/home/ubuntu/CityVibe-Project-Clean-Architecture/.env")
 	viper.SetConfigFile(".env")
 	viper.ReadInConfig()
 	for _, env := range envs {

@@ -51,10 +51,7 @@ func (clean *AdminHandler) AdminLogin(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	c.SetCookie("Authorisation", admindetails.TokenString, 36000, "", "", false, true)
-
-	c.JSON(http.StatusOK, gin.H{"message": "Admin logged in successfully"})
+	c.JSON(http.StatusOK, gin.H{"message": "Admin logged in successfully", "token": admindetails.TokenString})
 
 }
 

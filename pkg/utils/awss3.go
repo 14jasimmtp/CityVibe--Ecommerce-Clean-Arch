@@ -39,10 +39,10 @@ func UploadImageToS3(file *multipart.FileHeader, sess *session.Session) (string,
 	defer image.Close()
 	uploader := s3manager.NewUploader(sess)
 	upload, err := uploader.Upload(&s3manager.UploadInput{
-		Bucket: aws.String("vibecity1/product_images/"),
+		Bucket: aws.String("images/"),
 		Key:    aws.String(file.Filename),
 		Body:   image,
-		ACL:    aws.String("private"),
+		ACL:    aws.String("public"),
 	})
 	if err != nil {
 		fmt.Println("eror")
